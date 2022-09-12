@@ -1,0 +1,4 @@
+[deps]
+DataFramesMeta = "1313f7d8-7da2-5740-9ea0-a2ca25f37964"
+PharmaDatasets = "1ceaab83-7ac3-4b16-bfc1-5dcd3355b9fc"
+Pumas = "4f2c3c20-a4ac-11e9-067b-e5872d3484cf"
