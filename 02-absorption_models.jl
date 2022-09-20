@@ -36,7 +36,7 @@ foabs = @model begin
     end
 
     @derived begin
-        cp := @. Central / Vc
+        cp := @. 1000 * Central / Vc
         dv ~ @. Normal(cp, σ)
     end
 end
@@ -79,7 +79,7 @@ zoabs = @model begin
     end
 
     @derived begin
-        cp := @. Central / Vc
+        cp := @. 1000 * Central / Vc
         dv ~ @. Normal(cp, σ)
     end
 
@@ -102,7 +102,7 @@ two_parallel_foabs = @model begin
         tvvc ∈ RealDomain(lower=0)
         tvka1 ∈ RealDomain(lower=0)
         tvka2 ∈ RealDomain(lower=0)
-        tvbio ∈ RealDomain(lower=0)
+        tvbio ∈ RealDomain(lower=0, upper=1)
         Ω ∈ PDiagDomain(5)
         σ ∈ RealDomain(lower=0)
     end
@@ -119,17 +119,18 @@ two_parallel_foabs = @model begin
     end
 
     @dosecontrol begin
-        bioav = (IR=tvbio * exp(η[5]), SR=(1 - tvbio) * exp(η[5]))
+        bioav = (IR=tvbio * exp(η[5]),
+                 SR=(1 - tvbio) * exp(η[5]))
     end
 
     @dynamics begin
-        IR' = -Ka1 * IR
-        SR' = -Ka2 * SR
+        IR' = -Ka1 * IR # Immediate Release
+        SR' = -Ka2 * SR # Sustained Release
         Central' = Ka1 * IR + Ka2 * SR - Central * CL / Vc
     end
 
     @derived begin
-        cp := @. Central / Vc
+        cp := @. 1000 * Central / Vc
         dv ~ @. Normal(cp, σ)
     end
 end
